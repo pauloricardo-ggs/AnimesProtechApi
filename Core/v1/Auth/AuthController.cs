@@ -1,6 +1,7 @@
+using Asp.Versioning;
 using Core.Dtos;
 using Core.Dtos.Requests;
-using Core.Helpers;
+using Core.Helpers.Constants;
 using Core.Helpers.Erros;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Core.v1.Controllers;
 
 [ApiController]
+[ApiVersion(ApiVersions.V1_0)]
 public class AuthController(UserManager<User> userManager, IJwtTokenGenerator jwtTokenGenerator) : ControllerBase
 {
     private readonly UserManager<User> _userManager = userManager;
