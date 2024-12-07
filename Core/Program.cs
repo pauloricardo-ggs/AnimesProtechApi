@@ -8,8 +8,9 @@ Env.Load();
 ConfigurationEnvironment.Configure(builder.Configuration);
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddVersioning();
 builder.Services.AddDatabase();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithRoutePrefix("api/v{version:apiVersion}");
 builder.Services.AddOpenApi();
 builder.Services.AddIdentity();
 builder.Services.AddJwtAuthentication();

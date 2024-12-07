@@ -7,7 +7,7 @@ public static class SwaggerConfig
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Animes Protech API"));
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "v1"));
             /// No .net 9 o swagger deixou de ser usado como padrão por falta
             /// de manutenção e release oficial para o .net 8.
             /// O recomendado atualmente é o Scalar, que também suporta o OpenApi.
