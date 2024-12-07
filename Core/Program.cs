@@ -12,6 +12,8 @@ builder.Services.AddDatabase();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddIdentity();
+builder.Services.AddJwtAuthentication();
+builder.Services.InjectServices();
 
 var app = builder.Build();
 app.UseSwaggerIfIsDevelopment();
