@@ -1,13 +1,17 @@
 using Core.Configurations;
 using Domain.Constants;
 using DotNetEnv;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
+var assembly = AppDomain.CurrentDomain.Load("Application");
 
 Env.Load();
 ConfigurationEnvironment.Configure(builder.Configuration);
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddMediatR(assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 builder.Services.AddVersioning();
 builder.Services.AddDatabase();
 builder.Services.AddControllersWithRoutePrefix("api/v{version:apiVersion}");
