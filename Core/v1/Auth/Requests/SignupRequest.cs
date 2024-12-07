@@ -1,4 +1,4 @@
-namespace Core.Dtos.Requests;
+namespace Core.v1.Auth.Requests;
 
 public class SignupRequest
 {

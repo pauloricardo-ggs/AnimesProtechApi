@@ -1,63 +1,32 @@
+using Application.Commands;
 using Asp.Versioning;
-using Core.Dtos;
-using Core.Dtos.Requests;
+using AutoMapper;
 using Core.Helpers.Constants;
-using Core.Helpers.Erros;
+using Core.v1.Auth.Requests;
 using Domain.Entities;
-using Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core.v1.Controllers;
 
 [ApiController]
 [ApiVersion(ApiVersions.V1_0)]
-public class AuthController(UserManager<User> userManager, IJwtTokenGenerator jwtTokenGenerator) : ControllerBase
-{
-    private readonly UserManager<User> _userManager = userManager;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
+public class AuthController(IMediator mediator, IMapper mapper) : ControllerBase
+{   
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost("auth/signup")]
-    public async Task<ActionResult<IdDto>> Signup([FromBody] SignupRequest request)
+    public async Task<ActionResult<Guid>> Signup([FromBody] SignupRequest request)
     {
-        if (request.Password != request.PasswordConfirmation)
-        {
-            return BadRequest(AuthError.PasswordsDontMatch);
-        }
-
-        var user = new User(request.Email);
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Created("", new IdDto { Id = user.Id.ToString() });
+        var command = _mapper.Map<SignupCommand>(request);
+        return await _mediator.Send(command);
     }
 
     [HttpPost("auth/signin")]
     public async Task<ActionResult<Jwt>> Signin([FromBody] SigninRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
-
-        if (user == null)
-        {
-            return Unauthorized(AuthError.InvalidCredentials);
-        }
-
-        if (!await _userManager.CheckPasswordAsync(user, request.Password))
-        {
-            await _userManager.AccessFailedAsync(user);
-            return Unauthorized(AuthError.InvalidCredentials);
-        }
-
-        await _userManager.ResetAccessFailedCountAsync(user);
-
-        if (await _userManager.IsLockedOutAsync(user))
-        {
-            return Unauthorized(AuthError.Blocked);
-        }
-
-        return Ok(await _jwtTokenGenerator.Generate(user, _userManager));
+        var command = _mapper.Map<SigninCommand>(request);
+        return await _mediator.Send(command);
     }
 }
