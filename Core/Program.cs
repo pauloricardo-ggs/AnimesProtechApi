@@ -1,8 +1,17 @@
 using Core.Configurations;
+using Domain.Constants;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
+ConfigurationEnvironment.Configure(builder.Configuration);
+builder.Configuration.AddEnvironmentVariables();
+
+builder.Services.AddDatabase();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddIdentity();
 
 var app = builder.Build();
 app.UseSwaggerIfIsDevelopment();
