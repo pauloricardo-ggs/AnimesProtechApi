@@ -1,6 +1,6 @@
-namespace Core.v1.Auth.Requests;
+namespace Core.v1.Auth.Dtos;
 
-public class SigninRequest
+public class SigninDto
 {
     public required string Email { get; set; }
     public required string Password { get; set; }

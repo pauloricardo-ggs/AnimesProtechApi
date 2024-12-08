@@ -9,7 +9,8 @@ public class AutoMapperConfig
     {
         return new MapperConfiguration(autoMapperConfig =>
         {
-            autoMapperConfig.AddProfile(new RequestToCommandMappingProfile());
+            autoMapperConfig.AddProfile(new DtoToCommandMappingProfile());
+            autoMapperConfig.AddProfile(new EntityToDtoMappingProfile());
         });
     }
 }

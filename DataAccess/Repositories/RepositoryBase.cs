@@ -9,12 +9,12 @@ public class RepositoryBase<TEntity>(ApplicationDbContext context) : IRepository
 {
     protected readonly ApplicationDbContext context = context;
 
-    public virtual async Task<ICollection<TEntity>> GetAll()
+    public virtual async Task<ICollection<TEntity>> List()
     {
         return await context.Set<TEntity>().ToListAsync();
     }
 
-    public virtual async Task<ICollection<TEntity>?> GetAll(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] include)
+    public virtual async Task<ICollection<TEntity>?> List(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] include)
     {
         if (predicate == null) return null;
 
