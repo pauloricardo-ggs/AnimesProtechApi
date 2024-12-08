@@ -22,12 +22,6 @@ public static class SeedData
                 Id = Guid.Parse(RoleConstant.ADMIN_ID),
                 Name = RoleConstant.ADMIN,
                 NormalizedName = RoleConstant.ADMIN.ToUpper(),
-            },
-            new IdentityRole<Guid>
-            {
-                Id = Guid.Parse(RoleConstant.USER_ID),
-                Name = RoleConstant.USER,
-                NormalizedName = RoleConstant.USER.ToUpper(),
             }
         );
     }

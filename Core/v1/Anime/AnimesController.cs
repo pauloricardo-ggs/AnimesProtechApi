@@ -3,10 +3,13 @@ using Application.Queries;
 using Asp.Versioning;
 using AutoMapper;
 using Core.Helpers;
+using Core.Helpers.Attributes;
 using Core.Helpers.Constants;
 using Core.v1.Anime.Dtos;
+using Domain.Constants;
 using Domain.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core.v1.Controllers;
@@ -20,6 +23,7 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     private readonly IAnimeQueries _animeQueries = animeQueries;
 
     [HttpPost("anime")]
+    [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult<Guid?>> Create([FromBody] AnimeDto request)
     {
         var command = _mapper.Map<CreateAnimeCommand>(request);
@@ -27,6 +31,7 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     }
 
     [HttpGet("animes")]
+    [Authorize]
     public async Task<ActionResult<PagedList<AnimeDetailsDto>>> List()
     {
         var (page, pageSize) = HttpContext.GetQueryPagination();
@@ -36,6 +41,7 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     }
 
     [HttpPut("anime/{animeId}")]
+    [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult> Update([FromRoute] Guid animeId, [FromBody] AnimeDto request)
     {
         var command = _mapper.Map<UpdateAnimeCommand>(request);
@@ -44,6 +50,7 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     }
 
     [HttpDelete("anime/{animeId}")]
+    [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult<Guid?>> Delete([FromRoute] Guid animeId)
     {
         var command = new DeleteAnimeCommand(animeId);

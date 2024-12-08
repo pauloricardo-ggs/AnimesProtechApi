@@ -18,11 +18,14 @@ builder.Services.AddControllersWithRoutePrefix("api/v{version:apiVersion}");
 builder.Services.AddOpenApi();
 builder.Services.AddIdentity();
 builder.Services.AddJwtAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.InjectServices();
+builder.Services.AddSwagger();
 
 var app = builder.Build();
 app.UseSwaggerIfIsDevelopment();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
