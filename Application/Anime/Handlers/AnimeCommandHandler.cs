@@ -2,14 +2,18 @@ using Application.Commands;
 using Application.Errors;
 using Application.Queries;
 using Application.Shared;
+using Domain.Constants;
 using Domain.Entities;
+using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace Application.Handlers;
 
 public class AnimeCommandHandler(
+    IRequestLogger logger,
     IMediator mediator,
     IAnimeQueries animeQueries,
     IAnimeRepository animeRepository) 
@@ -18,6 +22,7 @@ public class AnimeCommandHandler(
     IRequestHandler<UpdateAnimeCommand, ActionResult>,
     IRequestHandler<DeleteAnimeCommand, ActionResult>
 {
+    private readonly IRequestLogger _logger = logger;
     private readonly IAnimeQueries _animeQueries = animeQueries;
     private readonly IAnimeRepository _animeRepository = animeRepository;
 
@@ -41,7 +46,7 @@ public class AnimeCommandHandler(
         
         if (!await _animeRepository.Save())
         {
-            return BaseError.UnexpectedBehavior.Result;
+            return BaseError.UnexpectedBehavior.SaveLog(_logger, RequestTypeConstant.ANIME_CREATE_TYPE, request.Path, request).Result;
         }
 
         return new CreatedObjectResult(anime.Id);
@@ -73,7 +78,7 @@ public class AnimeCommandHandler(
         
         if (!await _animeRepository.Save())
         {
-            return BaseError.UnexpectedBehavior.Result;
+            return BaseError.UnexpectedBehavior.SaveLog(_logger, RequestTypeConstant.ANIME_UPDATE_TYPE, request.Path, request).Result;
         }
 
         return new NoContentResult();
@@ -97,7 +102,7 @@ public class AnimeCommandHandler(
         
         if (!await _animeRepository.Save())
         {
-            return BaseError.UnexpectedBehavior.Result;
+            return BaseError.UnexpectedBehavior.SaveLog(_logger, RequestTypeConstant.ANIME_DELETE_TYPE, request.Path, request).Result;
         }
 
         return new NoContentResult();

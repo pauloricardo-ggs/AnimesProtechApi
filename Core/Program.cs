@@ -21,6 +21,7 @@ builder.Services.AddJwtAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.InjectServices();
 builder.Services.AddSwagger();
+builder.Host.AddSerilog();
 
 var app = builder.Build();
 app.UseSwaggerIfIsDevelopment();

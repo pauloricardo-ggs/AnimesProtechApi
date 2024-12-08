@@ -22,15 +22,16 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     private readonly IMapper _mapper = mapper;
     private readonly IAnimeQueries _animeQueries = animeQueries;
 
-    [HttpPost("anime")]
+    [HttpPost(Routes.ANIME_CREATE)]
     [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult<Guid?>> Create([FromBody] AnimeDto request)
     {
         var command = _mapper.Map<CreateAnimeCommand>(request);
+        command.AddPath(Routes.ANIME_CREATE);
         return await _mediator.Send(command);
     }
 
-    [HttpGet("animes")]
+    [HttpGet(Routes.ANIME_LIST)]
     [Authorize]
     [Filterable]
     public async Task<ActionResult<PagedList<AnimeDetailsDto>>> List()
@@ -41,20 +42,22 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
         return Ok(_mapper.Map<PagedList<AnimeDetailsDto>>(animes));
     }
 
-    [HttpPut("anime/{animeId}")]
+    [HttpPut(Routes.ANIME_UPDATE)]
     [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult> Update([FromRoute] Guid animeId, [FromBody] AnimeDto request)
     {
         var command = _mapper.Map<UpdateAnimeCommand>(request);
+        command.AddPath(Routes.ANIME_CREATE);
         command.AddId(animeId);
         return await _mediator.Send(command);
     }
 
-    [HttpDelete("anime/{animeId}")]
+    [HttpDelete(Routes.ANIME_DELETE)]
     [RolesAuthorize(RoleConstant.ADMIN)]
     public async Task<ActionResult<Guid?>> Delete([FromRoute] Guid animeId)
     {
         var command = new DeleteAnimeCommand(animeId);
+        command.AddPath(Routes.ANIME_DELETE);
         return await _mediator.Send(command);
     }
 }
