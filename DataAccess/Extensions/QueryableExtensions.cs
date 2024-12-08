@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using Domain.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 public static class QueryableExtensions
@@ -53,5 +54,19 @@ public static class QueryableExtensions
 
         var lambda = Expression.Lambda<Func<T, bool>>(filterExpression, parameter);
         return query.Where(lambda);
+    }
+
+    public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> query, int page, int pageSize)
+    {
+        return query.Skip((page - 1) * pageSize).Take(pageSize);
+    }
+
+    public static async Task<PagedList<T>> ToPagedList<T>(this IQueryable<T> query, int page, int pageSize)
+    {
+        if (page <= 0) page = 1;
+        if (pageSize <= 0) pageSize = 10;
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        return new PagedList<T>(items, page, pageSize, totalCount);
     }
 }

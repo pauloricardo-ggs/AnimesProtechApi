@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Helpers;
 using Domain.Interfaces.Repositories;
 
 namespace Application.Queries;
@@ -17,8 +18,8 @@ public class AnimeQueries(IAnimeRepository animeRepository) : IAnimeQueries
         return await _animeRepository.GetByName(name);
     }
 
-    public async Task<ICollection<Anime>> List(string[]? filters)
+    public async Task<PagedList<Anime>> List(string[]? filters, int page, int pageSize)
     {
-        return await _animeRepository.List(filters);
+        return await _animeRepository.List(filters, page, pageSize);
     }
 }
