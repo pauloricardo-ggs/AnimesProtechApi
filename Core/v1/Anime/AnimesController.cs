@@ -5,6 +5,7 @@ using AutoMapper;
 using Core.Helpers;
 using Core.Helpers.Constants;
 using Core.v1.Anime.Dtos;
+using Domain.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,11 +27,12 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     }
 
     [HttpGet("animes")]
-    public async Task<ActionResult<AnimesDetailsDto>> List()
+    public async Task<ActionResult<PagedList<AnimeDetailsDto>>> List()
     {
+        var (page, pageSize) = HttpContext.GetQueryPagination();
         var filters = HttpContext.GetQueryFilters();
-        var animes = await _animeQueries.List(filters);
-        return Ok(_mapper.Map<AnimesDetailsDto>(animes));
+        var animes = await _animeQueries.List(filters, page, pageSize);
+        return Ok(_mapper.Map<PagedList<AnimeDetailsDto>>(animes));
     }
 
     [HttpPut("anime/{animeId}")]
