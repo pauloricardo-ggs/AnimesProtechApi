@@ -32,6 +32,7 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
 
     [HttpGet("animes")]
     [Authorize]
+    [Filterable]
     public async Task<ActionResult<PagedList<AnimeDetailsDto>>> List()
     {
         var (page, pageSize) = HttpContext.GetQueryPagination();
