@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,4 +19,13 @@ public class BaseError
         => new (new BadRequestObjectResult(string.Join("\n", errors.Select(error => error.Value))));
     public static BaseError InvalidArguments(IEnumerable<IdentityError> errors) 
         => new (new BadRequestObjectResult(string.Join("\n", errors.Select(e => e.Description))));
+}
+
+public static class BaseErrorExtensions
+{
+    public static BaseError SaveLog(this BaseError error, IRequestLogger logger, string requestType, string url, object? requestData = null)
+    {
+        logger.SaveRequest(requestType, url, requestData, error.Result, error.Result.StatusCode);
+        return error;
+    }
 }

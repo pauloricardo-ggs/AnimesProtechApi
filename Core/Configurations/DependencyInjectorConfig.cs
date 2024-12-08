@@ -1,4 +1,5 @@
 using Application.Queries;
+using Application.Shared;
 using Core.Helpers;
 using DataAccess.Contexts;
 using DataAccess.Repositories;
@@ -14,6 +15,8 @@ public static class DependencyInjectorConfig
         service.AddScoped<ApplicationDbContext>();
 
         service.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        service.AddScoped<IRequestLogger, RequestLogger>();
         
         #region Queries
         service.AddScoped<IAnimeQueries, AnimeQueries>();

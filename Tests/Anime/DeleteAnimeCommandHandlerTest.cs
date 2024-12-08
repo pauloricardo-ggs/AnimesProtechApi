@@ -9,6 +9,7 @@ using Application.Queries;
 using Domain.Interfaces.Repositories;
 using Tests.Anime.Fixtures;
 using Application;
+using Domain.Interfaces;
 
 namespace Tests.Anime;
 
@@ -16,6 +17,7 @@ public class DeleteAnimeCommandHandlerTest
 {
     private readonly AnimeFixture _animeFixture;
     
+    private readonly Mock<IRequestLogger> _loggerMock;
     private readonly Mock<IMediator> _mediatorMock;
     private readonly Mock<IAnimeQueries> _animeQueriesMock;
     private readonly Mock<IAnimeRepository> _animeRepositoryMock;
@@ -26,11 +28,12 @@ public class DeleteAnimeCommandHandlerTest
     {
         _animeFixture = new AnimeFixture();
 
+        _loggerMock = new Mock<IRequestLogger>();
         _mediatorMock = new Mock<IMediator>();
         _animeQueriesMock = new Mock<IAnimeQueries>();
         _animeRepositoryMock = new Mock<IAnimeRepository>();
 
-        _handler = new AnimeCommandHandler(_mediatorMock.Object, _animeQueriesMock.Object, _animeRepositoryMock.Object);
+        _handler = new AnimeCommandHandler(_loggerMock.Object, _mediatorMock.Object, _animeQueriesMock.Object, _animeRepositoryMock.Object);
     }
 
     [Fact]

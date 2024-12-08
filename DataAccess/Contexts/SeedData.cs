@@ -11,6 +11,7 @@ public static class SeedData
     {
         builder.SeedRoles();
         builder.SeedAdmin();
+        builder.SeedRequestType();
     }
 
     public static void SeedRoles(this ModelBuilder builder)
@@ -48,5 +49,27 @@ public static class SeedData
                 RoleId = Guid.Parse(RoleConstant.ADMIN_ID),
                 UserId = adminId 
             });
+    }
+
+    public static void SeedRequestType(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<RequestType>().HasData
+        (
+            new RequestType(
+                new Guid(RequestTypeConstant.ANIME_CREATE_TYPE),
+                RequestTypeConstant.ANIME_CREATE_NAME,
+                RequestTypeConstant.ANIME_CREATE_PATH
+            ),
+            new RequestType(
+                new Guid(RequestTypeConstant.ANIME_UPDATE_TYPE),
+                RequestTypeConstant.ANIME_UPDATE_NAME,
+                RequestTypeConstant.ANIME_UPDATE_PATH
+            ),
+            new RequestType(
+                new Guid(RequestTypeConstant.ANIME_DELETE_TYPE),
+                RequestTypeConstant.ANIME_DELETE_NAME,
+                RequestTypeConstant.ANIME_DELETE_PATH
+            )
+        );
     }
 }

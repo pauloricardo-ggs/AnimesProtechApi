@@ -18,7 +18,7 @@ public static class DatabaseConfig
         });
     }
 
-    private static string GetConnectionString()
+    public static string GetConnectionString()
     {
         var server = ConfigurationEnvironment.GetEnvironmentVariable("CONNECTION_STRING_SERVER");
         var port = ConfigurationEnvironment.GetEnvironmentVariable("CONNECTION_STRING_PORT");
