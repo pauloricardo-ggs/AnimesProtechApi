@@ -6,5 +6,5 @@ public interface IAnimeQueries
 {
     Task<Anime?> GetById(Guid id);
     Task<Anime?> GetByName(string name);
-    Task<ICollection<Anime>> List();
+    Task<ICollection<Anime>> List(string[]? filters);
 }

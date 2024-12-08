@@ -17,8 +17,8 @@ public class AnimeQueries(IAnimeRepository animeRepository) : IAnimeQueries
         return await _animeRepository.GetByName(name);
     }
 
-    public async Task<ICollection<Anime>> List()
+    public async Task<ICollection<Anime>> List(string[]? filters)
     {
-        return await _animeRepository.List();
+        return await _animeRepository.List(filters);
     }
 }
