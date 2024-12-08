@@ -7,6 +7,13 @@ namespace DataAccess.Repositories;
 
 public class AnimeRepository(ApplicationDbContext context) : RepositoryBase<Anime>(context), IAnimeRepository
 {
+    public async Task<ICollection<Anime>> List(string[]? filters)
+    {
+        return await context.Set<Anime>()
+            .ApplyFilters(filters)
+            .ToListAsync();
+    }
+
     public async Task<Anime?> GetByName(string name)
     {
         return await context.Set<Anime>()

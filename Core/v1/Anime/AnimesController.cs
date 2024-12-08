@@ -2,6 +2,7 @@ using Application.Commands;
 using Application.Queries;
 using Asp.Versioning;
 using AutoMapper;
+using Core.Helpers;
 using Core.Helpers.Constants;
 using Core.v1.Anime.Dtos;
 using MediatR;
@@ -27,7 +28,8 @@ public class AnimesController(IMediator mediator, IMapper mapper, IAnimeQueries 
     [HttpGet("animes")]
     public async Task<ActionResult<AnimesDetailsDto>> List()
     {
-        var animes = await _animeQueries.List();
+        var filters = HttpContext.GetQueryFilters();
+        var animes = await _animeQueries.List(filters);
         return Ok(_mapper.Map<AnimesDetailsDto>(animes));
     }
 
