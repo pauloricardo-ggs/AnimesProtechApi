@@ -3,10 +3,8 @@ using Moq;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
 using Tests.Extensions;
-using Tests.Auth.Fixtures;
 using Application.Handlers;
 using MediatR;
-using Application.Shared;
 using Application.Queries;
 using Domain.Interfaces.Repositories;
 using Tests.Anime.Fixtures;
@@ -14,7 +12,7 @@ using Application;
 
 namespace Tests.Anime;
 
-public class AnimeCommandHandlerTest
+public class CreateAnimeCommandHandlerTest
 {
     private readonly AnimeFixture _animeFixture;
     
@@ -24,7 +22,7 @@ public class AnimeCommandHandlerTest
 
     private readonly AnimeCommandHandler _handler;
 
-    public AnimeCommandHandlerTest()
+    public CreateAnimeCommandHandlerTest()
     {
         _animeFixture = new AnimeFixture();
 

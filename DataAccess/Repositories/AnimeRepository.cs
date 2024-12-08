@@ -10,7 +10,7 @@ public class AnimeRepository(ApplicationDbContext context) : RepositoryBase<Anim
     public async Task<Anime?> GetByName(string name)
     {
         return await context.Set<Anime>()
-            .Where(anime => anime.Name == name)
+            .Where(anime => anime.Name.ToLower() == name.ToLower())
             .FirstOrDefaultAsync();
     }
 }
